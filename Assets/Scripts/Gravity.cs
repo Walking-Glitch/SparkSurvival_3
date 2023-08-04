@@ -1,28 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class Gravity : MonoBehaviour
 {
-    public Brain brainBody;
-    private Rigidbody rb;
-    private Transform playerTransform;
+    public GravityGenerator attractor;
+    private Transform myTransform;
     void Start()
     {
-        rb = GetComponent<Rigidbody>();
-        rb.constraints= RigidbodyConstraints.FreezeRotation;
-        rb.useGravity = false;
-
-        playerTransform = transform;
-
+        GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotation;
+        GetComponent<Rigidbody>().useGravity = false;
+        myTransform = transform;
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (brainBody)
-        {
-            brainBody.Attract(playerTransform);
-        }
+        attractor.Attract(myTransform);
     }
 }
