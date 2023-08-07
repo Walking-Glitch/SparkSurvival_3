@@ -36,6 +36,7 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         levelCtr = 1;
+        Cursor.visible = false;
     }
     public void ChangeLevel()
     {
@@ -55,8 +56,9 @@ public class GameManager : MonoBehaviour
          
     }
 
-    public bool PlayerRespawned(bool isRespawned)
+    public void ClearScore()
     {
-        return isRespawned;
+        levelCtr = 1;
+        portalCtr = 0;
     }
 }

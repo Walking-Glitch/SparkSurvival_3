@@ -12,10 +12,17 @@ public class PlayerMovement : MonoBehaviour
     
     public float speed;
     public bool isRespawned;
+    public AudioSource shockSfx;
+    public AudioSource shockPortalSfx;
+    public AudioSource playerSfx;
+
+    private bool isDead;
+    private float respawnLerpFactor = 0.0f;
     private Vector3 spawnPosition;
     private Vector3 moveDir;
     private GameManager gameManager;
     private Rigidbody rb;
+
     
 
 
@@ -24,6 +31,7 @@ public class PlayerMovement : MonoBehaviour
         gameManager = GameManager.Instance;
         rb = GetComponent<Rigidbody>();
         spawnPosition = transform.position;
+        playerSfx.Play();
     }
     void Update()
     {
@@ -33,34 +41,54 @@ public class PlayerMovement : MonoBehaviour
     void FixedUpdate()
     {
         rb.MovePosition(rb.position + transform.TransformDirection(moveDir) * speed * Time.deltaTime);
+        SmoothTransition();
+
+    }
+
+    private void SmoothTransition()
+    {
+        if (!isRespawned && isDead)
+        {
+            respawnLerpFactor += Time.fixedDeltaTime * 1.0f; // Increase the lerp factor
+
+            // Use Mathf.Lerp to interpolate between the dyingPosition and spawnPosition
+            Vector3 interpolatedPosition = Vector3.Lerp(transform.position, spawnPosition, respawnLerpFactor);
+
+            // Set the position of the player to the interpolated position
+            rb.MovePosition(interpolatedPosition);
+
+            // Check if the lerp factor has reached 1.0 (fully transitioned)
+            if (respawnLerpFactor >= 0.9f)
+            {
+                // Reset the lerp factor and stop respawning
+                respawnLerpFactor = 0.0f;
+                isRespawned = false;
+                isDead = false;
+                // Clear score and perform any other actions
+                gameManager.ClearScore();
+                playerSfx.Play();
+            }
+        }
     }
 
     void Respawn()
     {
-      
-            transform.position = spawnPosition;
+        if (!isRespawned) 
+        {
+            playerSfx.Stop();
+            shockSfx.Play();
+            gameManager.ClearScore();
             isRespawned = true;
+            isDead = true;
+
+        }
+        
     }
 
     void OnTriggerStay(Collider other)
     {
         if (other.CompareTag("Enemy"))
         {
-            
-            //Debug.Log("WE DIED");
-
-            //rb.constraints = RigidbodyConstraints.None;
-            //rb.constraints = RigidbodyConstraints.FreezeRotationZ;
-
-            //Vector3 explosionDir = moveDir * 500f; // Adjust the explosion force magnitude as needed
-            //rb.AddForce(explosionDir, ForceMode.Impulse);
-
-            //// other.GetComponent<Rigidbody>().AddForce(-explosionDir, ForceMode.Impulse);
-
-            //// Apply an additional upward force to the player
-            //float upwardForce = 100f; // Adjust the upward force as needed
-            //rb.AddForce(Vector3.up * upwardForce, ForceMode.Impulse);
-
             Respawn();
         }
     }
