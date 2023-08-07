@@ -7,6 +7,8 @@ public class PortalSpawner : MonoBehaviour
     public GameObject [] portals;
     private int portalIndex = 0;
     private GameManager gameManager;
+    private bool flag;
+    
     void Start()
     {
         gameManager = GameManager.Instance;
@@ -21,15 +23,17 @@ public class PortalSpawner : MonoBehaviour
 
     public void ActivatePortals()
     {
+      
         if (portals is null)
         {
             return;
         }
 
-        if (portalIndex == 0)
+        if (portalIndex == 0 && !flag)
         {
            portalIndex = GetRandomPortal();
            portals[portalIndex].SetActive(true);
+           flag = true;
         }
 
         else
