@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class EnemySpark : MonoBehaviour
 {
     private Rigidbody rb;
+    private Vector3 spawnPosition;
     public Transform playerTransform;
     public float speed;
 
@@ -13,17 +15,18 @@ public class EnemySpark : MonoBehaviour
     public Vector3 sphereCenter;
     public float sphereRadius;
 
+    private GameManager gameManager;
+
 
     void Start()
     {
+        gameManager = GameManager.Instance;
+        spawnPosition = transform.position;
         rb = GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame
-    void Update()
-    {
-     
-    }
+ 
 
     protected virtual void FollowPlayer()
     {
@@ -48,5 +51,13 @@ public class EnemySpark : MonoBehaviour
         newPosition = sphereCenter + (newPosition - sphereCenter).normalized * sphereRadius;
 
         rb.MovePosition(newPosition);
+    }
+
+    protected virtual void Relocate()
+    {
+        if (gameManager.player.isRespawned)
+        {
+            transform.position = spawnPosition;
+        }
     }
 }

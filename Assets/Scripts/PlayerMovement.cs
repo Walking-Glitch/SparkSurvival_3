@@ -11,13 +11,19 @@ public class PlayerMovement : MonoBehaviour
     
     
     public float speed;
+    public bool isRespawned;
+    private Vector3 spawnPosition;
     private Vector3 moveDir;
+    private GameManager gameManager;
     private Rigidbody rb;
-    public Transform[] capsules;
+    
+
 
     void Start()
     {
+        gameManager = GameManager.Instance;
         rb = GetComponent<Rigidbody>();
+        spawnPosition = transform.position;
     }
     void Update()
     {
@@ -29,23 +35,42 @@ public class PlayerMovement : MonoBehaviour
         rb.MovePosition(rb.position + transform.TransformDirection(moveDir) * speed * Time.deltaTime);
     }
 
-    //void OnTriggerEnter(Collider other)
-    //{
-    //    if (other.CompareTag("Enemy"))
-    //    {
-    //        Debug.Log("WE DIED");
+    void Respawn()
+    {
+      
+            transform.position = spawnPosition;
+            isRespawned = true;
+    }
 
-    //        rb.constraints = RigidbodyConstraints.None;
-    //        rb.constraints = RigidbodyConstraints.FreezeRotationZ;
+    void OnTriggerStay(Collider other)
+    {
+        if (other.CompareTag("Enemy"))
+        {
+            
+            //Debug.Log("WE DIED");
 
-    //        Vector3 explosionDir = moveDir * 500f; // Adjust the explosion force magnitude as needed
-    //        rb.AddForce(explosionDir, ForceMode.Impulse);
+            //rb.constraints = RigidbodyConstraints.None;
+            //rb.constraints = RigidbodyConstraints.FreezeRotationZ;
 
-    //       // other.GetComponent<Rigidbody>().AddForce(-explosionDir, ForceMode.Impulse);
+            //Vector3 explosionDir = moveDir * 500f; // Adjust the explosion force magnitude as needed
+            //rb.AddForce(explosionDir, ForceMode.Impulse);
 
-    //        // Apply an additional upward force to the player
-    //        float upwardForce = 100f; // Adjust the upward force as needed
-    //        rb.AddForce(Vector3.up * upwardForce, ForceMode.Impulse);
-    //    }
-    //}
+            //// other.GetComponent<Rigidbody>().AddForce(-explosionDir, ForceMode.Impulse);
+
+            //// Apply an additional upward force to the player
+            //float upwardForce = 100f; // Adjust the upward force as needed
+            //rb.AddForce(Vector3.up * upwardForce, ForceMode.Impulse);
+
+            Respawn();
+        }
+    }
+
+    void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Enemy"))
+        {
+            isRespawned = false;
+        }
+    }
+
 }

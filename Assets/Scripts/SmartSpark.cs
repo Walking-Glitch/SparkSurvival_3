@@ -4,7 +4,12 @@ using UnityEngine;
 
 public class SmartSpark : EnemySpark
 {
-    
+
+    void Update()
+    {
+        Relocate();
+    }
+
     // Update is called once per frame
     void FixedUpdate()
     {
@@ -14,5 +19,9 @@ public class SmartSpark : EnemySpark
     protected override void FollowPlayer()
     {
         base.FollowPlayer();
+    }
+    protected override void Relocate()
+    {
+        base.Relocate();
     }
 }

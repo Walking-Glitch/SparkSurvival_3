@@ -4,8 +4,11 @@ using UnityEngine;
 
 public class DumbSpark : EnemySpark
 {
-     
 
+    void Update()
+    {
+        Relocate();
+    }
     // Update is called once per frame
     void FixedUpdate()
     {
@@ -15,5 +18,10 @@ public class DumbSpark : EnemySpark
     protected override void MoveAhead()
     {
         base.MoveAhead();
+    }
+
+    protected override void Relocate()
+    {
+        base.Relocate();
     }
 }
