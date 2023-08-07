@@ -15,12 +15,10 @@ public class DetectionCheck : MonoBehaviour
     {
         if (collision.collider.CompareTag("Player"))
         {
-            Debug.Log("PLAYER TOUCHED PORTAL");
+           // Debug.Log("PLAYER TOUCHED PORTAL");
             gameManager.PortalCounter();
         }
 
-        {
-            Debug.Log("PLAYER MISSED PORTAL");
-        }
+       
     }
 }

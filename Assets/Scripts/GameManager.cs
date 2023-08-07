@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
    
 
     public int portalCtr;
+    public int levelCtr;
 
     #region Singleton
     private static GameManager instance;
@@ -34,18 +35,24 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-       
+        levelCtr = 1;
     }
     public void ChangeLevel()
     {
-
+        if (portalCtr >= 10)
+        {
+            portalCtr = 0;
+            levelCtr++;
+        }
     }
 
-    public int PortalCounter()
+    public void PortalCounter()
     {
         portalSpawner.ActivatePortals();
-        Debug.Log(portalCtr++);
-        return portalCtr++;
+        portalCtr++;
+        ChangeLevel();
+        Debug.Log(levelCtr);
+         
     }
 
     public bool PlayerRespawned(bool isRespawned)
