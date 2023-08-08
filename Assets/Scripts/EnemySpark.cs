@@ -17,17 +17,36 @@ public class EnemySpark : MonoBehaviour
 
     private GameManager gameManager;
 
+    private Gravity gravity;
+    
 
     void Start()
     {
         gameManager = GameManager.Instance;
+        gameManager.OnPlayerWin += HandlePlayerWin;
         spawnPosition = transform.position;
         rb = GetComponent<Rigidbody>();
     }
 
-    // Update is called once per frame
- 
+    private void HandlePlayerWin()
+    {
+        gravity = GetComponent<Gravity>();
+        gravity.enabled = false;
 
+        DumbSpark dumbSpark = GetComponent<DumbSpark>();
+        SmartSpark smartSpark = GetComponent<SmartSpark>();
+
+        if (smartSpark != null)
+        {
+            smartSpark.enabled = false;
+        }
+        else if (dumbSpark != null)
+        {
+            dumbSpark.enabled = false;
+        }
+
+        rb.AddForce(transform.up * 1000);
+    }
     protected virtual void FollowPlayer()
     {
         Vector3 directionToPlayer = playerTransform.position - transform.position;

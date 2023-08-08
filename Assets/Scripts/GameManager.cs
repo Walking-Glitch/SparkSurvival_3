@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class GameManager : MonoBehaviour
 {
@@ -13,6 +14,8 @@ public class GameManager : MonoBehaviour
 
     #region Singleton
     private static GameManager instance;
+
+    public event Action OnPlayerWin;
 
     private GameManager(){}
 
@@ -40,10 +43,15 @@ public class GameManager : MonoBehaviour
     }
     public void ChangeLevel()
     {
-        if (portalCtr >= 10)
+        if (portalCtr >= 1)//10
         {
             portalCtr = 0;
             levelCtr++;
+        }
+
+        if (levelCtr == 2)//10
+        {
+            WinningEvent();
         }
     }
 
@@ -61,4 +69,11 @@ public class GameManager : MonoBehaviour
         levelCtr = 1;
         portalCtr = 0;
     }
+
+    public void WinningEvent()
+    {
+        OnPlayerWin?.Invoke();
+    }
 }
+
+ 

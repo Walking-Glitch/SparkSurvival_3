@@ -12,13 +12,14 @@ public class PortalSpawner : MonoBehaviour
     void Start()
     {
         gameManager = GameManager.Instance;
+        gameManager.OnPlayerWin += HandlePlayerWin;
         ActivatePortals();
     }
 
     // Update is called once per frame
-    void Update()
+    private void HandlePlayerWin()
     {
-       
+        this.gameObject.SetActive(false);
     }
 
     public void ActivatePortals()
