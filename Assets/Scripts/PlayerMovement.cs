@@ -29,6 +29,7 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         gameManager = GameManager.Instance;
+        gameManager.OnPlayerWin += HandlePlayerWin;
         rb = GetComponent<Rigidbody>();
         spawnPosition = transform.position;
         playerSfx.Play();
@@ -43,6 +44,14 @@ public class PlayerMovement : MonoBehaviour
         rb.MovePosition(rb.position + transform.TransformDirection(moveDir) * speed * Time.deltaTime);
         SmoothTransition();
 
+    }
+
+    private void HandlePlayerWin()
+    {
+        Gravity gravity = GetComponent<Gravity>();
+        gravity.enabled = false;
+        rb.AddForce(transform.up * 500);
+        this.enabled = false;
     }
 
     private void SmoothTransition()
