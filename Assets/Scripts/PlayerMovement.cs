@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 using UnityEngine.Windows;
 using Input = UnityEngine.Input;
 
@@ -48,10 +49,14 @@ public class PlayerMovement : MonoBehaviour
 
     private void HandlePlayerWin()
     {
-        Gravity gravity = GetComponent<Gravity>();
-        gravity.enabled = false;
-        rb.AddForce(transform.up * 500);
-        this.enabled = false;
+        //Gravity gravity = GetComponent<Gravity>();
+        //gravity.enabled = false;
+        //rb.AddForce(transform.up * 500);
+        //this.enabled = false;
+
+      
+        SceneManager.LoadScene("Intro");
+     
     }
 
     private void SmoothTransition()

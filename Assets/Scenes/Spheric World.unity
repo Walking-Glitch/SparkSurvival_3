@@ -662,7 +662,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 833982522347536317, guid: 2be8d839f816d2044897d4a94028b474, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2be8d839f816d2044897d4a94028b474, type: 3}
@@ -735,7 +735,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 833982522347536317, guid: 2be8d839f816d2044897d4a94028b474, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2be8d839f816d2044897d4a94028b474, type: 3}
@@ -5811,7 +5811,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: / 10
+  m_text: / 3
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 11108872cbe9de64b9c6f2a891b938f5, type: 2}
   m_sharedMaterial: {fileID: -2858504832546893718, guid: 11108872cbe9de64b9c6f2a891b938f5, type: 2}
@@ -10936,7 +10936,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!82 &959820901
 AudioSource:
   m_ObjectHideFlags: 0
@@ -31132,6 +31132,10 @@ PrefabInstance:
     - target: {fileID: 833982522347536317, guid: 2be8d839f816d2044897d4a94028b474, type: 3}
       propertyPath: m_Name
       value: DumbSpark
+      objectReference: {fileID: 0}
+    - target: {fileID: 833982522347536317, guid: 2be8d839f816d2044897d4a94028b474, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2be8d839f816d2044897d4a94028b474, type: 3}

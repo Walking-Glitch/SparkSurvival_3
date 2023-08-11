@@ -7,7 +7,7 @@ public class FlashingText : MonoBehaviour
 {
     public TextMeshProUGUI flashingText;
 
-    private float cycleDuration = 3.0f; // Total time for one complete fade in and fade out cycle
+    private float cycleDuration = 0.8f; // Total time for one complete fade in and fade out cycle
 
     void Start()
     {

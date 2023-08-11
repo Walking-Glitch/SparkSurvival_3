@@ -30,22 +30,22 @@ public class EnemySpark : MonoBehaviour
 
     private void HandlePlayerWin()
     {
-        gravity = GetComponent<Gravity>();
-        gravity.enabled = false;
+        //gravity = GetComponent<Gravity>();
+        //gravity.enabled = false;
 
-        DumbSpark dumbSpark = GetComponent<DumbSpark>();
-        SmartSpark smartSpark = GetComponent<SmartSpark>();
+        //DumbSpark dumbSpark = GetComponent<DumbSpark>();
+        //SmartSpark smartSpark = GetComponent<SmartSpark>();
 
-        if (smartSpark != null)
-        {
-            smartSpark.enabled = false;
-        }
-        else if (dumbSpark != null)
-        {
-            dumbSpark.enabled = false;
-        }
+        //if (smartSpark != null)
+        //{
+        //    smartSpark.enabled = false;
+        //}
+        //else if (dumbSpark != null)
+        //{
+        //    dumbSpark.enabled = false;
+        //}
 
-        rb.AddForce(transform.up * 1000);
+        //rb.AddForce(transform.up * 1000);
     }
     protected virtual void FollowPlayer()
     {
