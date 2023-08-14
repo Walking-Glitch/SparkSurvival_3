@@ -18,6 +18,7 @@ public class PlayerMovement : MonoBehaviour
     public AudioSource playerSfx;
 
     private bool isDead;
+    public bool isMenuOpen;
     private float respawnLerpFactor = 0.0f;
     private Vector3 spawnPosition;
     private Vector3 moveDir;
@@ -31,6 +32,8 @@ public class PlayerMovement : MonoBehaviour
     {
         gameManager = GameManager.Instance;
         gameManager.OnPlayerWin += HandlePlayerWin;
+        gameManager.OnPauseObject += HandlePause;
+        gameManager.OnResumeObject += HandleResume;
         rb = GetComponent<Rigidbody>();
         spawnPosition = transform.position;
         playerSfx.Play();
@@ -38,15 +41,33 @@ public class PlayerMovement : MonoBehaviour
     void Update()
     {
         moveDir = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical")).normalized;
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            gameManager.ToggleCustomization();
+        }
     }
 
     void FixedUpdate()
     {
-        rb.MovePosition(rb.position + transform.TransformDirection(moveDir) * speed * Time.deltaTime);
+        if (!isMenuOpen)
+        {
+            rb.MovePosition(rb.position + transform.TransformDirection(moveDir) * speed * Time.deltaTime);
+        }
+      
         SmoothTransition();
 
     }
 
+    private void HandlePause()
+    {
+        isMenuOpen = true;
+    }
+
+    private void HandleResume()
+    {
+        isMenuOpen = false;
+    }
     private void HandlePlayerWin()
     {
         //Gravity gravity = GetComponent<Gravity>();
@@ -100,7 +121,7 @@ public class PlayerMovement : MonoBehaviour
     }
 
     void OnTriggerStay(Collider other)
-    {
+    { 
         if (other.CompareTag("Enemy"))
         {
             Respawn();
@@ -109,10 +130,10 @@ public class PlayerMovement : MonoBehaviour
 
     void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Enemy"))
-        {
-            isRespawned = false;
-        }
+      
+            if (other.CompareTag("Enemy"))
+            {
+                isRespawned = false;
+            }
     }
-
 }

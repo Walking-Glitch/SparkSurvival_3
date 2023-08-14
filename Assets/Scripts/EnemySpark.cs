@@ -47,6 +47,8 @@ public class EnemySpark : MonoBehaviour
 
         //rb.AddForce(transform.up * 1000);
     }
+
+    
     protected virtual void FollowPlayer()
     {
         Vector3 directionToPlayer = playerTransform.position - transform.position;
@@ -64,13 +66,17 @@ public class EnemySpark : MonoBehaviour
 
     protected virtual void MoveAhead()
     {
-        Vector3 direction =  transform.forward.normalized;
-        Vector3 newPosition = transform.position + direction * speed * Time.deltaTime;
+        if (!gameManager.player.isMenuOpen)
+        {
+            Vector3 direction = transform.forward.normalized;
+            Vector3 newPosition = transform.position + direction * speed * Time.deltaTime;
 
-        newPosition = sphereCenter + (newPosition - sphereCenter).normalized * sphereRadius;
+            newPosition = sphereCenter + (newPosition - sphereCenter).normalized * sphereRadius;
 
-        rb.MovePosition(newPosition);
+            rb.MovePosition(newPosition);
+        }
     }
+       
 
     protected virtual void Relocate()
     {
