@@ -11,20 +11,24 @@ public class ButtonScript : MonoBehaviour
     public GameObject prevBtn;
     public GameObject selectBtn;
     public TextMeshProUGUI selectBtnText;
+
+    public AudioSource equipSfx;
+    public AudioSource scrollSfx;
     
 
     public int j;
 
     void Start()
     {
+        Cursor.visible = false;
         // Initialize with the first unlocked spark
         gameManager = GameManager.Instance;
         j = 0;
         UpdateUnlockedSparks();
         UpdateSparkVisibility();
         DisableButton();
+       
 
-        Cursor.lockState = CursorLockMode.None;
     }
 
     void Update()
@@ -52,8 +56,8 @@ public class ButtonScript : MonoBehaviour
 
     public void NextSpark()
     {
-        //UpdateLockedText();
         ++j;
+        scrollSfx.Play();
         j = Mathf.Clamp(j, 0, sparks.Length - 1);
         UpdateSparkVisibility();
         DisableButton();
@@ -63,6 +67,7 @@ public class ButtonScript : MonoBehaviour
     public void PrevSpark()
     {
         --j;
+        scrollSfx.Play();
         j = Mathf.Clamp(j, 0, sparks.Length - 1);
         UpdateSparkVisibility();
         DisableButton();
@@ -87,6 +92,8 @@ public class ButtonScript : MonoBehaviour
     {
         if (j >= 0 && j < sparks.Length && !sparks[j].GetComponent<LockCheck>().isLocked)
         {
+            if(equipSfx != null) equipSfx.Play();
+            
             ParticleSystem[] playerParticleSystems = gameManager.player.GetComponentsInChildren<ParticleSystem>();
             ParticleSystem[] sparkParticleSystems = sparks[j].GetComponentsInChildren<ParticleSystem>();
 

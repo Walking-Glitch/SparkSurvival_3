@@ -100,7 +100,7 @@ public class PlayerMovement : MonoBehaviour
                 isRespawned = false;
                 isDead = false;
                 // Clear score and perform any other actions
-                gameManager.ClearScore();
+                //gameManager.ClearScore();
                 playerSfx.Play();
             }
         }
@@ -112,7 +112,7 @@ public class PlayerMovement : MonoBehaviour
         {
             playerSfx.Stop();
             shockSfx.Play();
-            gameManager.ClearScore();
+            //gameManager.ClearScore();
             isRespawned = true;
             isDead = true;
 
