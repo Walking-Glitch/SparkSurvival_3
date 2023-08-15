@@ -1,29 +1,36 @@
+using System.Diagnostics.Tracing;
 using UnityEngine;
+using TMPro;
 
 public class ButtonScript : MonoBehaviour
 {
-    public GameObject[] sparks;
+    private GameManager gameManager; // Reference to the GameManager
+    public GameObject[] unlockedSparksByLevel; // Array storing unlocked spark models for each level
+    public GameObject[] sparks; // Current array of sparks to display
     public GameObject nextBtn;
     public GameObject prevBtn;
     public GameObject selectBtn;
+    public TextMeshProUGUI selectBtnText;
     
-    private GameManager gameManager;
 
-    private int j;
+    public int j;
 
     void Start()
     {
-        // Initialize with the first spark
-        j = 0;
+        // Initialize with the first unlocked spark
         gameManager = GameManager.Instance;
+        j = 0;
+        UpdateUnlockedSparks();
         UpdateSparkVisibility();
         DisableButton();
 
         Cursor.lockState = CursorLockMode.None;
     }
+
     void Update()
     {
         HandleInput();
+        UpdateLockedText();
     }
 
     void HandleInput()
@@ -43,26 +50,26 @@ public class ButtonScript : MonoBehaviour
         }
     }
 
-
     public void NextSpark()
     {
+        //UpdateLockedText();
         ++j;
-        j = Mathf.Clamp(j, 0, sparks.Length - 2);
-
+        j = Mathf.Clamp(j, 0, sparks.Length - 1);
         UpdateSparkVisibility();
         DisableButton();
+        
     }
 
     public void PrevSpark()
     {
         --j;
-        j = Mathf.Clamp(j, 0, sparks.Length - 2);
-
+        j = Mathf.Clamp(j, 0, sparks.Length - 1);
         UpdateSparkVisibility();
         DisableButton();
+        //UpdateLockedText();
     }
 
-    void UpdateSparkVisibility()
+    public void UpdateSparkVisibility()
     {
         for (int i = 0; i < sparks.Length; i++)
         {
@@ -72,13 +79,13 @@ public class ButtonScript : MonoBehaviour
 
     public void DisableButton()
     {
-        nextBtn.SetActive(j != sparks.Length - 1);
-        prevBtn.SetActive(j != 0);
+        nextBtn.SetActive(j < sparks.Length - 1);
+        prevBtn.SetActive(j > 0);
     }
 
     public void SelectButton()
     {
-        if (j >= 0 && j < sparks.Length)
+        if (j >= 0 && j < sparks.Length && !sparks[j].GetComponent<LockCheck>().isLocked)
         {
             ParticleSystem[] playerParticleSystems = gameManager.player.GetComponentsInChildren<ParticleSystem>();
             ParticleSystem[] sparkParticleSystems = sparks[j].GetComponentsInChildren<ParticleSystem>();
@@ -95,4 +102,45 @@ public class ButtonScript : MonoBehaviour
             }
         }
     }
+
+    public void UpdateUnlockedSparks()
+    {
+      
+        for (int i = 0; i <= gameManager.levelCtr -1; i++)
+        {
+            if (sparks[i] == null)
+            {
+                Debug.Log("sparks i is null");
+            }
+            if (sparks[j] == null)
+            {
+                Debug.Log("sparks j is null");
+            }
+            if (unlockedSparksByLevel[j] == null)
+            {
+                Debug.Log("unlockedSparksByLevel j is null");
+            }
+
+            if (unlockedSparksByLevel[i] == null)
+            {
+                Debug.Log("unlockedSparksByLevel i is null");
+            }
+            sparks[i] = unlockedSparksByLevel[i];
+        }
+    }
+
+    public void UpdateLockedText()
+    {
+        if (sparks[j].GetComponent<LockCheck>().isLocked)
+        {
+            selectBtnText.text = "Locked";
+        }
+
+        else
+        {
+            selectBtnText.text = "Equip";
+        }
+    }
+        
+
 }

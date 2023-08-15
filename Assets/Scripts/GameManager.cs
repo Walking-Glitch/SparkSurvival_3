@@ -52,13 +52,13 @@ public class GameManager : MonoBehaviour
     }
     public void ChangeLevel()
     {
-        if (portalCtr >= 10)//10
+        if (portalCtr >= 1)//10
         {
             portalCtr = 0;
             levelCtr++;
         }
 
-        if (levelCtr == 4)//10
+        if (levelCtr == 8)//10
         {
             WinningEvent();
         }
@@ -97,6 +97,8 @@ public class GameManager : MonoBehaviour
     {
         buttonScript.gameObject.SetActive(true);
         PauseObject();
+        buttonScript.UpdateUnlockedSparks();
+        
     }
 
     private void CloseCustomizationMenu()
