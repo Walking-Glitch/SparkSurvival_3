@@ -1,6 +1,7 @@
 using System.Diagnostics.Tracing;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 public class ButtonScript : MonoBehaviour
 {
@@ -14,6 +15,8 @@ public class ButtonScript : MonoBehaviour
 
     public AudioSource equipSfx;
     public AudioSource scrollSfx;
+
+    public Image image;
     
 
     public int j;
@@ -28,6 +31,7 @@ public class ButtonScript : MonoBehaviour
         UpdateSparkVisibility();
         DisableButton();
        
+       image.material.color = Color.black;
 
     }
 
@@ -79,6 +83,7 @@ public class ButtonScript : MonoBehaviour
         for (int i = 0; i < sparks.Length; i++)
         {
             sparks[i].SetActive(i == j);
+            if (image != null) image.material.color = Color.black;
         }
     }
 
@@ -93,7 +98,15 @@ public class ButtonScript : MonoBehaviour
         if (j >= 0 && j < sparks.Length && !sparks[j].GetComponent<LockCheck>().isLocked)
         {
             if(equipSfx != null) equipSfx.Play();
-            
+            if (image != null)
+            {
+                image.material.color = Color.white;
+                image.fillCenter = true;
+              
+                
+                
+            }
+
             ParticleSystem[] playerParticleSystems = gameManager.player.GetComponentsInChildren<ParticleSystem>();
             ParticleSystem[] sparkParticleSystems = sparks[j].GetComponentsInChildren<ParticleSystem>();
 
@@ -107,6 +120,11 @@ public class ButtonScript : MonoBehaviour
                     playerMainModule.startColor = sparkMainModule.startColor;
                 }
             }
+        }
+
+        else
+        {
+            if (image != null) image.material.color = Color.black;
         }
     }
 
