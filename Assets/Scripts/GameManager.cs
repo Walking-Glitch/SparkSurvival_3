@@ -2,24 +2,40 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using TMPro;
+using Newtonsoft.Json.Bson;
 
 public class GameManager : MonoBehaviour
 {
+    #region References to other scripts and objects
+
     public PlayerMovement player;
     public PortalSpawner portalSpawner;
+    public RedPortalSpawner redPortalSpawner;
     public ButtonScript buttonScript;
-   
+    public GameObject sparkFoundText;
+
+    #endregion
+
+    #region Variables
 
     public int portalCtr;
+    public int redPortalCtr;
     public int levelCtr;
     private bool isPaused;
 
-    #region Singleton
-    private static GameManager instance;
+    #endregion
+
+    #region Action Events
 
     public event Action OnPlayerWin;
     public event Action OnPauseObject;
     public event Action OnResumeObject;
+
+    #endregion
+
+    #region Singleton
+    private static GameManager instance;
 
     private GameManager(){}
 
@@ -46,17 +62,14 @@ public class GameManager : MonoBehaviour
         Cursor.visible = false;
     }
 
-    private void Update()
-    {
-
-    }
     public void ChangeLevel()
     {
-        if (portalCtr >= 10)//10
+        if (portalCtr >= 2)//10
         {
             portalCtr = 0;
             levelCtr++;
-            ToggleCustomization();
+            SpawnRedPortal();
+            //ToggleCustomization();
         }
 
         if (levelCtr == 8)//10
@@ -71,7 +84,17 @@ public class GameManager : MonoBehaviour
         portalCtr++;
         ChangeLevel();
         Debug.Log(levelCtr);
-         
+    }
+
+    public void RedPortalCounter()
+    {
+        redPortalSpawner.DeactivatePortal();
+        redPortalCtr++;
+    }
+
+    public void SpawnRedPortal()
+    {
+        redPortalSpawner.ActivatePortals();
     }
 
     public void ClearScore()
@@ -99,17 +122,12 @@ public class GameManager : MonoBehaviour
         buttonScript.gameObject.SetActive(true);
         PauseObject();
         buttonScript.UpdateUnlockedSparks();
-        
     }
-
     private void CloseCustomizationMenu()
     {
         buttonScript.gameObject.SetActive(false);
         ResumeObject();
-         
-
     }
-
     public void ToggleCustomization()
     {
         isPaused = !isPaused;
@@ -117,7 +135,6 @@ public class GameManager : MonoBehaviour
         if (isPaused)
         {
             OpenCustomizationMenu();
-           
         }
         else
         {

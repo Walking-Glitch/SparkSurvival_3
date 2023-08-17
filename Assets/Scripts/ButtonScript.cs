@@ -5,9 +5,9 @@ using UnityEngine.UI;
 
 public class ButtonScript : MonoBehaviour
 {
-    private GameManager gameManager; // Reference to the GameManager
-    public GameObject[] unlockedSparksByLevel; // Array storing unlocked spark models for each level
-    public GameObject[] sparks; // Current array of sparks to display
+    private GameManager gameManager; 
+    public GameObject[] unlockedSparksByLevel;  
+    public GameObject[] sparks;  
     public GameObject nextBtn;
     public GameObject prevBtn;
     public GameObject selectBtn;
@@ -24,7 +24,6 @@ public class ButtonScript : MonoBehaviour
     void Start()
     {
         Cursor.visible = false;
-        // Initialize with the first unlocked spark
         gameManager = GameManager.Instance;
         j = 0;
         UpdateUnlockedSparks();
@@ -102,9 +101,6 @@ public class ButtonScript : MonoBehaviour
             {
                 image.material.color = Color.white;
                 image.fillCenter = true;
-              
-                
-                
             }
 
             ParticleSystem[] playerParticleSystems = gameManager.player.GetComponentsInChildren<ParticleSystem>();
@@ -131,7 +127,7 @@ public class ButtonScript : MonoBehaviour
     public void UpdateUnlockedSparks()
     {
       
-        for (int i = 0; i <= gameManager.levelCtr -1; i++)
+        for (int i = 0; i <= gameManager.redPortalCtr ; i++)// - changes here
         {
             if (sparks[i] == null)
             {
