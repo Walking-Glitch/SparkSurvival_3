@@ -15,6 +15,10 @@ public class RedPortalDetectionCheck : MonoBehaviour
         if (collision.collider.CompareTag("Player"))
         {
             // Debug.Log("PLAYER TOUCHED PORTAL");
+            if (gameManager.redPortalCtr == 0)
+            {
+                gameManager.pressEscText.SetActive(true);
+            }
             gameManager.RedPortalCounter();
             gameManager.player.shockPortalSfx.Play();
         }

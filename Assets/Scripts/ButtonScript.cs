@@ -28,7 +28,7 @@ public class ButtonScript : MonoBehaviour
         j = 0;
         UpdateUnlockedSparks();
         UpdateSparkVisibility();
-        DisableButton();
+        //DisableButton();
        
        image.material.color = Color.black;
 
@@ -60,21 +60,22 @@ public class ButtonScript : MonoBehaviour
     public void NextSpark()
     {
         ++j;
+        gameManager.pressArrowsText.SetActive(false);
         scrollSfx.Play();
         j = Mathf.Clamp(j, 0, sparks.Length - 1);
         UpdateSparkVisibility();
-        DisableButton();
+       // DisableButton();
         
     }
 
     public void PrevSpark()
     {
         --j;
+        gameManager.pressArrowsText.SetActive(false);
         scrollSfx.Play();
         j = Mathf.Clamp(j, 0, sparks.Length - 1);
         UpdateSparkVisibility();
-        DisableButton();
-        //UpdateLockedText();
+       // DisableButton();
     }
 
     public void UpdateSparkVisibility()

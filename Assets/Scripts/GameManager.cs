@@ -14,6 +14,8 @@ public class GameManager : MonoBehaviour
     public RedPortalSpawner redPortalSpawner;
     public ButtonScript buttonScript;
     public GameObject sparkFoundText;
+    public GameObject pressEscText;
+    public GameObject pressArrowsText;
 
     #endregion
 
@@ -23,6 +25,7 @@ public class GameManager : MonoBehaviour
     public int redPortalCtr;
     public int levelCtr;
     private bool isPaused;
+    public bool isFlag;
 
     #endregion
 
@@ -120,11 +123,18 @@ public class GameManager : MonoBehaviour
     private void OpenCustomizationMenu()
     {
         buttonScript.gameObject.SetActive(true);
+        if (!isFlag)
+        {
+            pressArrowsText.SetActive(true);
+            isFlag = true;
+        }
         PauseObject();
         buttonScript.UpdateUnlockedSparks();
+       
     }
     private void CloseCustomizationMenu()
     {
+        pressArrowsText.SetActive(false);
         buttonScript.gameObject.SetActive(false);
         ResumeObject();
     }
@@ -135,6 +145,7 @@ public class GameManager : MonoBehaviour
         if (isPaused)
         {
             OpenCustomizationMenu();
+            
         }
         else
         {

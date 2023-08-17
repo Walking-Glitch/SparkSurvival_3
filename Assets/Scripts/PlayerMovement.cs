@@ -45,6 +45,7 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             gameManager.ToggleCustomization();
+            gameManager.pressEscText.SetActive(false);
         }
     }
 
@@ -115,9 +116,7 @@ public class PlayerMovement : MonoBehaviour
             //gameManager.ClearScore();
             isRespawned = true;
             isDead = true;
-
         }
-        
     }
 
     void OnTriggerStay(Collider other)
