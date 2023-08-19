@@ -7,6 +7,7 @@ public class ButtonScript : MonoBehaviour
 {
     private GameManager gameManager; 
     public GameObject[] unlockedSparksByLevel;  
+    public GameObject[] lockedSparks;
     public GameObject[] sparks;  
     public GameObject nextBtn;
     public GameObject prevBtn;
@@ -21,23 +22,44 @@ public class ButtonScript : MonoBehaviour
 
     public int j;
 
+    void Awake()
+    {
+        gameManager = GameManager.Instance;
+    }
     void Start()
     {
         Cursor.visible = false;
-        gameManager = GameManager.Instance;
-        j = 0;
+        ResetIndex();
         UpdateUnlockedSparks();
         UpdateSparkVisibility();
-        //DisableButton();
-       
-       image.material.color = Color.black;
-
+        image.material.color = Color.black;
     }
+    
 
     void Update()
     {
         HandleInput();
         UpdateLockedText();
+    }
+
+    public void EnterCode()
+    {
+        gameObject.SetActive(true);
+        ResetIndex();
+        UpdateUnlockedSparks();
+    }
+    public void ExitCode()
+    {
+        for (int i = 0; i < sparks.Length; i++)
+        {
+            lockedSparks[i].gameObject.SetActive(false);
+        }
+        gameObject.SetActive(false);
+    }
+    public void ResetIndex()
+    {
+        j = 0;
+        UpdateSparkVisibility();
     }
 
     void HandleInput()
@@ -64,26 +86,35 @@ public class ButtonScript : MonoBehaviour
         scrollSfx.Play();
         j = Mathf.Clamp(j, 0, sparks.Length - 1);
         UpdateSparkVisibility();
-       // DisableButton();
-        
     }
 
     public void PrevSpark()
     {
+        if (j == 0)
+        {
+            return;
+        }
         --j;
         gameManager.pressArrowsText.SetActive(false);
         scrollSfx.Play();
         j = Mathf.Clamp(j, 0, sparks.Length - 1);
         UpdateSparkVisibility();
-       // DisableButton();
     }
 
     public void UpdateSparkVisibility()
     {
         for (int i = 0; i < sparks.Length; i++)
         {
-            sparks[i].SetActive(i == j);
-            if (image != null) image.material.color = Color.black;
+            if (i == j)
+            {
+                sparks[i].SetActive(true);
+                if (image != null) image.material.color = Color.black;
+            }
+            else
+            {
+                sparks[i].SetActive(false);
+                lockedSparks[i].SetActive(false);
+            }
         }
     }
 
@@ -127,26 +158,8 @@ public class ButtonScript : MonoBehaviour
 
     public void UpdateUnlockedSparks()
     {
-      
         for (int i = 0; i <= gameManager.redPortalCtr ; i++)// - changes here
         {
-            if (sparks[i] == null)
-            {
-                Debug.Log("sparks i is null");
-            }
-            if (sparks[j] == null)
-            {
-                Debug.Log("sparks j is null");
-            }
-            if (unlockedSparksByLevel[j] == null)
-            {
-                Debug.Log("unlockedSparksByLevel j is null");
-            }
-
-            if (unlockedSparksByLevel[i] == null)
-            {
-                Debug.Log("unlockedSparksByLevel i is null");
-            }
             sparks[i] = unlockedSparksByLevel[i];
         }
     }
@@ -163,6 +176,4 @@ public class ButtonScript : MonoBehaviour
             selectBtnText.text = "Equip";
         }
     }
-        
-
 }

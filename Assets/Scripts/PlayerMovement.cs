@@ -42,7 +42,7 @@ public class PlayerMovement : MonoBehaviour
     {
         moveDir = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical")).normalized;
 
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Tab))
         {
             gameManager.ToggleCustomization();
             gameManager.pressEscText.SetActive(false);
