@@ -14,6 +14,8 @@ public class GameManager : MonoBehaviour
     public RedPortalSpawner redPortalSpawner;
     public ButtonScript buttonScript;
     public GameObject sparkFoundText;
+    public GameObject pressEscText;
+    public GameObject pressArrowsText;
 
     #endregion
 
@@ -23,6 +25,7 @@ public class GameManager : MonoBehaviour
     public int redPortalCtr;
     public int levelCtr;
     private bool isPaused;
+    public bool isFlag;
 
     #endregion
 
@@ -58,13 +61,14 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        redPortalCtr = 0;
         levelCtr = 1;
         Cursor.visible = false;
     }
 
     public void ChangeLevel()
     {
-        if (portalCtr >= 2)//10
+        if (portalCtr >= 10)//10
         {
             portalCtr = 0;
             levelCtr++;
@@ -72,7 +76,7 @@ public class GameManager : MonoBehaviour
             //ToggleCustomization();
         }
 
-        if (levelCtr == 8)//10
+        if (levelCtr == 9)//10
         {
             WinningEvent();
         }
@@ -119,13 +123,20 @@ public class GameManager : MonoBehaviour
     }
     private void OpenCustomizationMenu()
     {
-        buttonScript.gameObject.SetActive(true);
+        buttonScript.EnterCode();
+         
+        if (!isFlag)
+        {
+            pressArrowsText.SetActive(true);
+            isFlag = true;
+        }
         PauseObject();
-        buttonScript.UpdateUnlockedSparks();
     }
     private void CloseCustomizationMenu()
     {
-        buttonScript.gameObject.SetActive(false);
+        pressArrowsText.SetActive(false);
+        buttonScript.ExitCode();
+        
         ResumeObject();
     }
     public void ToggleCustomization()

@@ -61,8 +61,8 @@ public class RedPortalSpawner : MonoBehaviour
 
     public void DeactivatePortal()
     {
-        gameManager.sparkFoundText.SetActive(false);
         portals[portalIndex].SetActive(false);
+        gameManager.sparkFoundText.SetActive(false);
     }
 
     public int GetRandomPortal()
