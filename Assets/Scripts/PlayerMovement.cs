@@ -16,12 +16,14 @@ public class PlayerMovement : MonoBehaviour
     public AudioSource shockSfx;
     public AudioSource shockPortalSfx;
     public AudioSource playerSfx;
+    public FixedJoystick joystick;
 
     private bool isDead;
     public bool isMenuOpen;
     private float respawnLerpFactor = 0.0f;
     private Vector3 spawnPosition;
     private Vector3 moveDir;
+    private Vector3 moveDirJoystick;
     private GameManager gameManager;
     private Rigidbody rb;
 
@@ -41,7 +43,7 @@ public class PlayerMovement : MonoBehaviour
     void Update()
     {
         moveDir = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical")).normalized;
-
+        moveDirJoystick = new Vector3(joystick.Horizontal, 0, joystick.Vertical).normalized;
         if (Input.GetKeyDown(KeyCode.Tab))
         {
             gameManager.ToggleCustomization();
@@ -53,11 +55,18 @@ public class PlayerMovement : MonoBehaviour
     {
         if (!isMenuOpen)
         {
-            rb.MovePosition(rb.position + transform.TransformDirection(moveDir) * speed * Time.deltaTime);
+            if (joystick != null)
+            {
+                rb.MovePosition(rb.position + transform.TransformDirection(moveDirJoystick) * speed * Time.deltaTime);
+            }
+            else
+            {
+                rb.MovePosition(rb.position + transform.TransformDirection(moveDir) * speed * Time.deltaTime);
+            }
+           
         }
       
         SmoothTransition();
-
     }
 
     private void HandlePause()
