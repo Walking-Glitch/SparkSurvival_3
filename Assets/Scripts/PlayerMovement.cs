@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.Windows;
 using Input = UnityEngine.Input;
@@ -27,8 +28,49 @@ public class PlayerMovement : MonoBehaviour
     private GameManager gameManager;
     private Rigidbody rb;
 
-    
 
+    // new input system
+
+    private CustomInput input = null;
+    private Vector3 newDirVector = Vector3.zero;
+
+
+    void Awake()
+    {
+        input = new CustomInput();
+    }
+
+    private void OnEnable()
+    {
+        input.Enable();
+        input.Player.Move.performed += OnMovementPerformed;
+        input.Player.Move.canceled += OnMovementCancelled;
+        input.Player.DoublePress.performed += OnDoubleTapPerformed;
+    }
+
+    private void OnDisable()
+    {
+        input.Disable();
+        input.Player.Move.performed -= OnMovementPerformed;
+        input.Player.Move.canceled -= OnMovementCancelled;
+        input.Player.DoublePress.performed -= OnDoubleTapPerformed;
+    }
+
+    private void OnMovementPerformed(InputAction.CallbackContext value)
+    {
+        newDirVector = new Vector3(value.ReadValue<Vector2>().x, 0f, value.ReadValue<Vector2>().y);
+    }
+
+    private void OnMovementCancelled(InputAction.CallbackContext value)
+    {
+        newDirVector = Vector3.zero;
+    }
+
+    private void OnDoubleTapPerformed(InputAction.CallbackContext value)
+    {
+        gameManager.ToggleCustomization();
+        gameManager.pressEscText.SetActive(false); ;
+    }
 
     void Start()
     {
@@ -42,13 +84,13 @@ public class PlayerMovement : MonoBehaviour
     }
     void Update()
     {
-        moveDir = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical")).normalized;
+        //moveDir = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical")).normalized;
         moveDirJoystick = new Vector3(joystick.Horizontal, 0, joystick.Vertical).normalized;
-        if (Input.GetKeyDown(KeyCode.Tab))
-        {
-            gameManager.ToggleCustomization();
-            gameManager.pressEscText.SetActive(false);
-        }
+        //if (Input.GetKeyDown(KeyCode.Tab))
+        //{
+        //    gameManager.ToggleCustomization();
+        //    gameManager.pressEscText.SetActive(false);
+        //}
     }
 
     void FixedUpdate()
@@ -57,11 +99,13 @@ public class PlayerMovement : MonoBehaviour
         {
             if (joystick != null)
             {
+                //rb.MovePosition(rb.position + transform.TransformDirection(moveDirJoystick) * speed * Time.deltaTime);
                 rb.MovePosition(rb.position + transform.TransformDirection(moveDirJoystick) * speed * Time.deltaTime);
             }
             else
             {
-                rb.MovePosition(rb.position + transform.TransformDirection(moveDir) * speed * Time.deltaTime);
+                // rb.MovePosition(rb.position + transform.TransformDirection(moveDir) * speed * Time.deltaTime);
+                rb.MovePosition(rb.position + transform.TransformDirection(newDirVector) * speed * Time.deltaTime);
             }
            
         }
@@ -86,7 +130,7 @@ public class PlayerMovement : MonoBehaviour
         //this.enabled = false;
 
       
-        SceneManager.LoadScene("Intro");
+        SceneManager.LoadScene(sceneBuildIndex:-1);
      
     }
 
