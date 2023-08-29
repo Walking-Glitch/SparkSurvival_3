@@ -2,6 +2,8 @@ using System.Diagnostics.Tracing;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using UnityEngine.InputSystem;
+using UnityEngine.EventSystems;
 
 public class ButtonScript : MonoBehaviour
 {
@@ -18,13 +20,17 @@ public class ButtonScript : MonoBehaviour
     public AudioSource scrollSfx;
 
     public Image image;
-    
+
+    // new input system
+
+    private CustomInput input = null;
 
     public int j;
 
     void Awake()
     {
         gameManager = GameManager.Instance;
+        input = new CustomInput();
     }
     void Start()
     {
@@ -34,11 +40,45 @@ public class ButtonScript : MonoBehaviour
         UpdateSparkVisibility();
         image.material.color = Color.black;
     }
-    
+
+    private void OnEnable()
+    {
+        input.Enable();
+        input.CustomMenu.TapPosition.performed += OnMenuNavTapPerformed;
+        //input.CustomMenu.Select.performed += OnMenuTapSelect;
+    }
+
+    private void OnDisable()
+    {
+        input.Disable();
+        input.CustomMenu.TapPosition.performed -= OnMenuNavTapPerformed;
+        //input.CustomMenu.Select.performed -= OnMenuTapSelect;
+    }
+
+     
+    private void OnMenuNavTapPerformed(InputAction.CallbackContext value)
+    {
+        if (EventSystem.current != null && EventSystem.current.currentSelectedGameObject != null)
+        {
+            // Skip navigation gesture if over UI element
+            return;
+        }
+
+        Vector2 tapPosition = value.ReadValue<Vector2>();
+
+        if (tapPosition.x < Screen.width / 2)
+        {
+            PrevSpark();
+        }
+        else
+        {
+            NextSpark();
+        }
+    }
 
     void Update()
     {
-        HandleInput();
+        //HandleInput();
         UpdateLockedText();
     }
 
