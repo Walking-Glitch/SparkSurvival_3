@@ -44,37 +44,37 @@ public class ButtonScript : MonoBehaviour
     private void OnEnable()
     {
         input.Enable();
-        input.CustomMenu.TapPosition.performed += OnMenuNavTapPerformed;
+        //input.CustomMenu.TapPosition.performed += OnMenuNavTapPerformed;
         //input.CustomMenu.Select.performed += OnMenuTapSelect;
     }
 
     private void OnDisable()
     {
         input.Disable();
-        input.CustomMenu.TapPosition.performed -= OnMenuNavTapPerformed;
+       // input.CustomMenu.TapPosition.performed -= OnMenuNavTapPerformed;
         //input.CustomMenu.Select.performed -= OnMenuTapSelect;
     }
 
      
-    private void OnMenuNavTapPerformed(InputAction.CallbackContext value)
-    {
-        if (EventSystem.current != null && EventSystem.current.currentSelectedGameObject != null)
-        {
-            // Skip navigation gesture if over UI element
-            return;
-        }
+    //private void OnMenuNavTapPerformed(InputAction.CallbackContext value)
+    //{
+    //    if (EventSystem.current != null && EventSystem.current.currentSelectedGameObject != null)
+    //    {
+    //        // Skip navigation gesture if over UI element
+    //        return;
+    //    }
 
-        Vector2 tapPosition = value.ReadValue<Vector2>();
+    //    Vector2 tapPosition = value.ReadValue<Vector2>();
 
-        if (tapPosition.x < Screen.width / 2)
-        {
-            PrevSpark();
-        }
-        else
-        {
-            NextSpark();
-        }
-    }
+    //    if (tapPosition.x < Screen.width / 2)
+    //    {
+    //        PrevSpark();
+    //    }
+    //    else
+    //    {
+    //        NextSpark();
+    //    }
+    //}
 
     void Update()
     {

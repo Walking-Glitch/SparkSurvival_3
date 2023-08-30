@@ -166,7 +166,7 @@ public class PlayerMovement : MonoBehaviour
         {
             playerSfx.Stop();
             shockSfx.Play();
-            //gameManager.ClearScore();
+            gameManager.ClearScore();
             isRespawned = true;
             isDead = true;
         }
