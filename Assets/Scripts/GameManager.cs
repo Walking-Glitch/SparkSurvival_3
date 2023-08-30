@@ -103,7 +103,7 @@ public class GameManager : MonoBehaviour
 
     public void ClearScore()
     {
-        levelCtr = 1;
+        //levelCtr = 1;
         portalCtr = 0;
     }
 
