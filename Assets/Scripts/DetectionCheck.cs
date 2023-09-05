@@ -17,6 +17,7 @@ public class DetectionCheck : MonoBehaviour
         {
            // Debug.Log("PLAYER TOUCHED PORTAL");
             gameManager.PortalCounter();
+            gameManager.IncreaseLives();
             gameManager.player.shockPortalSfx.Play();
         }
 

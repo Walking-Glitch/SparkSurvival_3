@@ -5,10 +5,16 @@ using UnityEngine;
 public class RedPortalDetectionCheck : MonoBehaviour
 {
     private GameManager gameManager;
-
     void Start()
     {
         gameManager = GameManager.Instance;
+    }
+
+    void TranslatePlayer()
+    {
+        gameManager.player.transform.position = gameManager.WarpBrainSpawn.transform.position;
+        gameManager.player.GetComponent<Gravity>().attractor =
+            gameManager.warpZoneGenerator;
     }
     void OnCollisionEnter(Collision collision)
     {
@@ -21,6 +27,7 @@ public class RedPortalDetectionCheck : MonoBehaviour
             }
             gameManager.RedPortalCounter();
             gameManager.player.shockPortalSfx.Play();
+            TranslatePlayer();
         }
 
     }

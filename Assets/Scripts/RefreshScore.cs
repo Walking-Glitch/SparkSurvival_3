@@ -6,6 +6,7 @@ public class RefreshScore : MonoBehaviour
 {
     public TextMeshProUGUI scoreLevel;
     public TextMeshProUGUI scorePortal;
+    public TextMeshProUGUI scoreLives;
     private GameManager gameManager;
 
     void Start()
@@ -16,5 +17,7 @@ public class RefreshScore : MonoBehaviour
     {
         scoreLevel.SetText(gameManager.levelCtr.ToString()); 
         scorePortal.SetText(gameManager.portalCtr.ToString());
+        scoreLives.SetText(gameManager.livesCounter.ToString());
+
     }
 }

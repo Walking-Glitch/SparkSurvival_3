@@ -13,9 +13,12 @@ public class GameManager : MonoBehaviour
     public PortalSpawner portalSpawner;
     public RedPortalSpawner redPortalSpawner;
     public ButtonScript buttonScript;
+    public GravityGenerator mainBrainGenerator;
+    public GravityGenerator warpZoneGenerator;
     public GameObject sparkFoundText;
     public GameObject pressEscText;
     public GameObject pressArrowsText;
+    public GameObject WarpBrainSpawn;
 
     #endregion
 
@@ -24,6 +27,7 @@ public class GameManager : MonoBehaviour
     public int portalCtr;
     public int redPortalCtr;
     public int levelCtr;
+    public int livesCounter;
     private bool isPaused;
     public bool isFlag;
 
@@ -62,13 +66,26 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         redPortalCtr = 0;
+        livesCounter = 0;
         levelCtr = 1;
         Cursor.visible = false;
     }
 
+    public void IncreaseLives()
+    {
+        livesCounter++;
+        livesCounter = Mathf.Clamp(livesCounter, 0, 10);
+    }
+
+    public void DecreaseLives()
+    {
+        livesCounter--;
+        livesCounter = Mathf.Clamp(livesCounter, 0, 10);
+    }
+
     public void ChangeLevel()
     {
-        if (portalCtr >= 10)//10
+        if (portalCtr >= 3)//10
         {
             portalCtr = 0;
             levelCtr++;
@@ -87,7 +104,7 @@ public class GameManager : MonoBehaviour
         portalSpawner.ActivatePortals();
         portalCtr++;
         ChangeLevel();
-        Debug.Log(levelCtr);
+        //Debug.Log(levelCtr);
     }
 
     public void RedPortalCounter()
@@ -103,8 +120,11 @@ public class GameManager : MonoBehaviour
 
     public void ClearScore()
     {
-        //levelCtr = 1;
-        portalCtr = 0;
+        if (livesCounter == 0)
+        {
+            //levelCtr = 1;
+            portalCtr = 0;
+        }
     }
 
     public void WinningEvent()
