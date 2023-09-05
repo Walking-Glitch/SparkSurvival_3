@@ -12,7 +12,7 @@ public class EnemySpark : MonoBehaviour
     public float speed;
 
      
-    public Vector3 sphereCenter;
+    private Vector3 sphereCenter;
     public float sphereRadius;
 
     private GameManager gameManager;
@@ -26,6 +26,7 @@ public class EnemySpark : MonoBehaviour
         gameManager.OnPlayerWin += HandlePlayerWin;
         spawnPosition = transform.position;
         rb = GetComponent<Rigidbody>();
+        sphereCenter = GetComponent<Gravity>().attractor.transform.position;
     }
 
     private void HandlePlayerWin()
