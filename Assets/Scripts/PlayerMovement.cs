@@ -162,11 +162,13 @@ public class PlayerMovement : MonoBehaviour
 
     void Respawn()
     {
-        if (!isRespawned) 
+        if (!isRespawned)
         {
+            gameManager.player.GetComponent<Gravity>().attractor = gameManager.mainBrainGenerator;
             playerSfx.Stop();
             shockSfx.Play();
             gameManager.ClearScore();
+            gameManager.DecreaseLives();
             isRespawned = true;
             isDead = true;
         }
