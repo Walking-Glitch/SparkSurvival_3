@@ -17,17 +17,20 @@ public class PlayerMovement : MonoBehaviour
     public AudioSource shockSfx;
     public AudioSource shockPortalSfx;
     public AudioSource playerSfx;
+    public AudioSource spawnSfx;
     public FixedJoystick joystick;
 
     private bool isDead;
+    private bool isCredits;
     public bool isMenuOpen;
     private float respawnLerpFactor = 0.0f;
+    private Quaternion spawnRotation;
     private Vector3 spawnPosition;
     private Vector3 moveDir;
     private Vector3 moveDirJoystick;
     private GameManager gameManager;
-    private Rigidbody rb;
-
+    public Rigidbody rb;
+    public Gravity gravity;
 
     // new input system
 
@@ -79,7 +82,9 @@ public class PlayerMovement : MonoBehaviour
         gameManager.OnPauseObject += HandlePause;
         gameManager.OnResumeObject += HandleResume;
         rb = GetComponent<Rigidbody>();
+        gravity = GetComponent<Gravity>();
         spawnPosition = transform.position;
+        spawnRotation = transform.rotation;
         playerSfx.Play();
     }
     void Update()
@@ -129,22 +134,24 @@ public class PlayerMovement : MonoBehaviour
         //rb.AddForce(transform.up * 500);
         //this.enabled = false;
 
-      
-        SceneManager.LoadScene(sceneBuildIndex:-1);
-     
-    }
+        isCredits = true;
 
+        //SceneManager.LoadScene(sceneBuildIndex:-1);
+    }
     private void SmoothTransition()
     {
-        if (!isRespawned && isDead)
+        if (!isRespawned && isDead && !gameManager.isWarping)
         {
             respawnLerpFactor += Time.fixedDeltaTime * 1.0f; // Increase the lerp factor
 
             // Use Mathf.Lerp to interpolate between the dyingPosition and spawnPosition
             Vector3 interpolatedPosition = Vector3.Lerp(transform.position, spawnPosition, respawnLerpFactor);
 
+          
             // Set the position of the player to the interpolated position
             rb.MovePosition(interpolatedPosition);
+
+          
 
             // Check if the lerp factor has reached 1.0 (fully transitioned)
             if (respawnLerpFactor >= 0.9f)
@@ -153,12 +160,39 @@ public class PlayerMovement : MonoBehaviour
                 respawnLerpFactor = 0.0f;
                 isRespawned = false;
                 isDead = false;
+                gameManager.isWarping = false;
                 // Clear score and perform any other actions
                 //gameManager.ClearScore();
                 playerSfx.Play();
             }
         }
+
+        else if (!isRespawned && isDead && gameManager.isWarping)
+        {
+            Debug.Log("hi from warping");
+            TranslatePlayerFromWarp();
+            isRespawned = false;
+            isDead = false;
+            gameManager.isWarping = false;
+            playerSfx.Play();
+        }
     }
+
+    public void TranslatePlayerFromWarp()
+    {
+        gravity.enabled = false;
+        rb.isKinematic = true;
+        gameManager.enemiesBrainObject.SetActive(false);
+        gameObject.transform.position = spawnPosition;
+        //gameObject.transform.rotation = spawnRotation;
+        gameManager.player.GetComponent<Gravity>().attractor = gameManager.mainBrainGenerator;
+        spawnSfx.Play();
+        rb.isKinematic = false;
+        gravity.enabled = true;
+
+
+    }
+
 
     void Respawn()
     {
@@ -169,6 +203,8 @@ public class PlayerMovement : MonoBehaviour
             shockSfx.Play();
             gameManager.ClearScore();
             gameManager.DecreaseLives();
+            gameManager.ToggleOffTimerUI();
+            //gameManager.isWarping = false;
             isRespawned = true;
             isDead = true;
         }
@@ -176,7 +212,7 @@ public class PlayerMovement : MonoBehaviour
 
     void OnTriggerStay(Collider other)
     { 
-        if (other.CompareTag("Enemy"))
+        if (other.CompareTag("Enemy") && !isCredits)
         {
             Respawn();
         }
