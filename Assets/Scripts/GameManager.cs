@@ -18,7 +18,11 @@ public class GameManager : MonoBehaviour
     public GameObject sparkFoundText;
     public GameObject pressEscText;
     public GameObject pressArrowsText;
-    public GameObject WarpBrainSpawn;
+    public GameObject warpTimerText;
+    public GameObject warpSurviveText;
+    public GameObject warpBrainSpawn;
+    public GameObject enemiesBrainObject;
+    //public GameObject mainBrainObject;
 
     #endregion
 
@@ -28,8 +32,11 @@ public class GameManager : MonoBehaviour
     public int redPortalCtr;
     public int levelCtr;
     public int livesCounter;
+    public float warpTimer;
+    public int intWarpTimer;
     private bool isPaused;
     public bool isFlag;
+    public bool isWarping;
 
     #endregion
 
@@ -67,8 +74,50 @@ public class GameManager : MonoBehaviour
     {
         redPortalCtr = 0;
         livesCounter = 0;
+        warpTimer = 15;
         levelCtr = 1;
         Cursor.visible = false;
+    }
+
+    private void Update()
+    {
+        if (isWarping)
+        {
+            WarpZoneTimer();
+        }
+    }
+    public void WarpZoneTimer()
+    {
+     
+        if (warpTimer > 0)
+        {
+            warpTimer -= Time.deltaTime;
+            warpTimer = Mathf.Clamp(warpTimer, 0, 15);
+        }
+        else
+        {
+            redPortalCtr++;
+            ToggleOffTimerUI();
+            player.TranslatePlayerFromWarp();
+            warpTimer = 15;
+            pressEscText.SetActive(true);
+            isWarping = false;
+        }
+
+        intWarpTimer = Mathf.FloorToInt(warpTimer);
+    }
+
+    public void ToggleOffTimerUI()
+    {
+        warpSurviveText.SetActive(false);
+        warpTimerText.SetActive(false);
+    }
+
+    public void ToggleOnTimerUI()
+    {
+        warpTimer = 15;
+        warpSurviveText.SetActive(true);
+        warpTimerText.SetActive(true);
     }
 
     public void IncreaseLives()
@@ -85,7 +134,7 @@ public class GameManager : MonoBehaviour
 
     public void ChangeLevel()
     {
-        if (portalCtr >= 3)//10
+        if (portalCtr >= 1)//10
         {
             portalCtr = 0;
             levelCtr++;
@@ -93,7 +142,7 @@ public class GameManager : MonoBehaviour
             //ToggleCustomization();
         }
 
-        if (levelCtr == 9)//10
+        if (levelCtr == 9)//9
         {
             WinningEvent();
         }
@@ -110,7 +159,7 @@ public class GameManager : MonoBehaviour
     public void RedPortalCounter()
     {
         redPortalSpawner.DeactivatePortal();
-        redPortalCtr++;
+        //redPortalCtr++; -> moved to timer
     }
 
     public void SpawnRedPortal()

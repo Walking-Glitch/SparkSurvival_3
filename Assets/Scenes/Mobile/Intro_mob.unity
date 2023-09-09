@@ -894,7 +894,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa36ca16609f9144e85a9ddd75c95159, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneToLoad: Spheric World
   audioSource: {fileID: 1951978970}
 --- !u!4 &1951978969
 Transform:
@@ -1014,6 +1013,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 91022680585519073, guid: 1e72503646b288e4a8ea887afd8f93a1, type: 3}
+      propertyPath: attractor
+      value: 
+      objectReference: {fileID: 1506512777}
     - target: {fileID: 3607105974235673728, guid: 1e72503646b288e4a8ea887afd8f93a1, type: 3}
       propertyPath: m_RootOrder
       value: 0
