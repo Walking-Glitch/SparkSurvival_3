@@ -96,6 +96,7 @@ public class PlayerMovement : MonoBehaviour
         //    gameManager.ToggleCustomization();
         //    gameManager.pressEscText.SetActive(false);
         //}
+        SmoothTransition(); // has to go here other wise, transition wont be fast enough 
     }
 
     void FixedUpdate()
@@ -114,8 +115,7 @@ public class PlayerMovement : MonoBehaviour
             }
            
         }
-      
-        SmoothTransition();
+        
     }
 
     private void HandlePause()
@@ -180,19 +180,17 @@ public class PlayerMovement : MonoBehaviour
 
     public void TranslatePlayerFromWarp()
     {
-        gravity.enabled = false;
-        rb.isKinematic = true;
+        //gravity.enabled = false;
+        //rb.isKinematic = true;
         gameManager.enemiesBrainObject.SetActive(false);
-        gameObject.transform.position = spawnPosition;
-        //gameObject.transform.rotation = spawnRotation;
         gameManager.player.GetComponent<Gravity>().attractor = gameManager.mainBrainGenerator;
+        gameObject.transform.rotation = spawnRotation;
+        gameObject.transform.position = spawnPosition;
         spawnSfx.Play();
-        rb.isKinematic = false;
-        gravity.enabled = true;
-
+        //rb.isKinematic = false;
+        //gravity.enabled = true;
 
     }
-
 
     void Respawn()
     {

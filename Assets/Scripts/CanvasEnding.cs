@@ -24,18 +24,18 @@ public class CanvasEnding : MonoBehaviour
     private void OnEnable()
     {
         input.Enable();
-        input.Player.TouchPress.performed += OnTouchPerformed;
+       // input.Player.TouchPress.performed += OnTouchPerformed;
     }
 
     private void OnDisable()
     {
         input.Disable();
-        input.Player.TouchPress.performed -= OnTouchPerformed;
+        //input.Player.TouchPress.performed -= OnTouchPerformed;
     }
-    private void OnTouchPerformed(InputAction.CallbackContext value)
-    {
-        LoadScene();
-    }
+    //private void OnTouchPerformed(InputAction.CallbackContext value)
+    //{
+    //    LoadScene();
+    //}
     public void HandlePlayerWin()
     {
         canvas.SetActive(true);
