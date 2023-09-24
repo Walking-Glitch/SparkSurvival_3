@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour
     public ButtonScript buttonScript;
     public GravityGenerator mainBrainGenerator;
     public GravityGenerator warpZoneGenerator;
+    public SparksLives sparksLives;
     public GameObject sparkFoundText;
     public GameObject pressEscText;
     public GameObject pressArrowsText;
@@ -22,6 +23,7 @@ public class GameManager : MonoBehaviour
     public GameObject warpSurviveText;
     public GameObject warpBrainSpawn;
     public GameObject enemiesBrainObject;
+
     //public GameObject mainBrainObject;
 
     #endregion
@@ -73,7 +75,7 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         redPortalCtr = 0;
-        livesCounter = 0;
+        livesCounter = 10;
         warpTimer = 15;
         levelCtr = 1;
         Cursor.visible = false;
@@ -124,12 +126,15 @@ public class GameManager : MonoBehaviour
     {
         livesCounter++;
         livesCounter = Mathf.Clamp(livesCounter, 0, 10);
+       // sparksLives.SparksUpdateHUD();
+
     }
 
     public void DecreaseLives()
     {
         livesCounter--;
         livesCounter = Mathf.Clamp(livesCounter, 0, 10);
+        //sparksLives.SparksUpdateHUD();
     }
 
     public void ChangeLevel()
