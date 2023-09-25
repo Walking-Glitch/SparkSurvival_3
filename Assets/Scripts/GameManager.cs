@@ -139,7 +139,7 @@ public class GameManager : MonoBehaviour
 
     public void ChangeLevel()
     {
-        if (portalCtr >= 1)//10
+        if (portalCtr >= 10)//10
         {
             portalCtr = 0;
             levelCtr++;
