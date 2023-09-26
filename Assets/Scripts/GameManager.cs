@@ -15,7 +15,7 @@ public class GameManager : MonoBehaviour
     public ButtonScript buttonScript;
     public GravityGenerator mainBrainGenerator;
     public GravityGenerator warpZoneGenerator;
-    public SparksLives sparksLives;
+    public BackgroundManager backgroundManager;
     public GameObject sparkFoundText;
     public GameObject pressEscText;
     public GameObject pressArrowsText;
@@ -79,6 +79,7 @@ public class GameManager : MonoBehaviour
         warpTimer = 15;
         levelCtr = 1;
         Cursor.visible = false;
+        backgroundManager.MainBackground();
     }
 
     private void Update()

@@ -38,7 +38,8 @@ public class RedPortalDetectionCheck : MonoBehaviour
             gameManager.RedPortalCounter();
             gameManager.player.shockPortalSfx.Play();
             gameManager.isWarping = true;
-            
+            gameManager.backgroundManager.SecondBackground();
+
             TranslatePlayer();
         }
     }
