@@ -90,7 +90,9 @@ public class PlayerMovement : MonoBehaviour
     void Update()
     {
         //moveDir = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical")).normalized;
-        moveDirJoystick = new Vector3(joystick.Horizontal, 0, joystick.Vertical).normalized;
+        if(!isDead){ moveDirJoystick = new Vector3(joystick.Horizontal, 0, joystick.Vertical).normalized; }
+         
+        
         //if (Input.GetKeyDown(KeyCode.Tab))
         //{
         //    gameManager.ToggleCustomization();
@@ -103,7 +105,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (!isMenuOpen)
         {
-            if (joystick != null)
+            if (joystick != null && !isDead)
             {
                 //rb.MovePosition(rb.position + transform.TransformDirection(moveDirJoystick) * speed * Time.deltaTime);
                 rb.MovePosition(rb.position + transform.TransformDirection(moveDirJoystick) * speed * Time.deltaTime);
@@ -183,6 +185,7 @@ public class PlayerMovement : MonoBehaviour
         //gravity.enabled = false;
         //rb.isKinematic = true;
         gameManager.enemiesBrainObject.SetActive(false);
+        gameManager.backgroundManager.MainBackground();
         gameManager.player.GetComponent<Gravity>().attractor = gameManager.mainBrainGenerator;
         gameObject.transform.rotation = spawnRotation;
         gameObject.transform.position = spawnPosition;

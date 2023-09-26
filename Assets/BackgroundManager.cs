@@ -11,23 +11,14 @@ public class BackgroundManager : MonoBehaviour
         gameManager = GameManager.Instance;
     }
 
-    
-    void Update()
+    public void MainBackground()
     {
-        UpdateBackground();
+        backgrounds[0].gameObject.SetActive(true);
+        backgrounds[1].gameObject.SetActive(false);
     }
-
-    private void UpdateBackground()
+    public void SecondBackground()
     {
-        if (gameManager.isWarping)
-        {
-            backgrounds[0].gameObject.SetActive(false);
-            backgrounds[1].gameObject.SetActive(true);
-        }
-        else
-        {
-            backgrounds[0].gameObject.SetActive(true);
-            backgrounds[1].gameObject.SetActive(false);
-        }
+        backgrounds[0].gameObject.SetActive(false);
+        backgrounds[1].gameObject.SetActive(true);
     }
 }
